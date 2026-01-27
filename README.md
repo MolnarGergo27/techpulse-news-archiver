@@ -46,7 +46,4 @@ Struktúra:
 ├── docker-compose.yml          # Orchestration (Volumes & Restart policy)
 └── requirements.txt            # Szükséges Python könyvtárak
 
-
-![Excel lista](excel_result.png.png)
-
 Készítette: Molnár Gergő - https://www.linkedin.com/in/gerg%C5%91-moln%C3%A1r-3920b53a7/
