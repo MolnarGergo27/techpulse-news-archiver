@@ -1,49 +1,45 @@
 TechPulse Archiver - Automated News Data Engineering
 
-A TechPulse Archiver egy autonóm Python-alapú mikroszolgáltatás, amely napi szinten aggregál technológiai híreket a Hacker News-ról, és azokat egy strukturált Excel adatbázisba archiválja. A projekt célja egy skálázható adatgyűjtő folyamat bemutatása, amely emberi beavatkozás nélkül fut.
+The TechPulse Archiver is an autonomous Python-based microservice that aggregates technology news from Hacker News and archives them into a structured Excel database daily. The goal of the project is to demonstrate a scalable data collector workflow without any human interaction.
 
 
-Funkciók:
-- Web Scraping: Automatizált adatnyerés BeautifulSoup4 és Requests könyvtárakkal
-- Intelligens adatkezelés: A Pandas könyvtár használatával történő adatfeldolgozás és duplikációszűrés
-- Persistent Storage: Hosszú távú adattárolás Excel formátumban
-- Autonomous Scheduling: Beépített időzítő mechanizmus, amely minden nap reggel 09:00-kor elindítja a folyamatot
-- Always-on Architecture: Docker-konténerbe zárt futtathatóság (```restart: always``` logikával)
+Features:
 
-Technológiai Stack:
-- Language: Python
-- Data Processing: Pandas
-- Scraping: BeautifulSoup4
-- Scheduling: Schedule könyvtár
-- Environment: Docker és Docker Compose (időzóna szinkronizációval)
+Web Scraping: Automated data extraction using BeautifulSoup4 and Requests libraries
+Intelligent datahandling: Data processing and removing duplicates by using Pandas
+Persistent Storage: Long-term storage in Excel
+Autonomous Scheduling: Embedded scheduler mechanism, which starts the script daily at 9:00 AM
+Always-on Architecture: Dockerized executability (```restart: always``` policy)
+
+Tech Stack:
+
+Language: Python
+Data Processing: Pandas
+Scraping: BeautifulSoup4
+Scheduling: Schedule library
+Environment: Docker és Docker Compose (timezone synchronized)
 
 
-Gyorsindítás:
-1. Repo clone
-git clone https://github.com/username/techpulse-archiver.git
-cd techpulse-archiver
+Quick Start:
+1. Clone the Repository
+git clone https://github.com/username/techpulse-archiver.git cd techpulse-archiver
 
-2. Indítás
+3. Start
 docker compose up -d
 
+Development Process & Challenges:
+Data consistency and duplication: The biggest challenge was to handle the duplicate news. I used the ```drop_duplicates``` function on the titles of the news to solve the problem. This way the archive contains only unique posts regardless of how many days a news item is on the front page.
 
-Fejlesztés közbeni kihívások és megfontolások:
-1. Adatkonzisztencia és duplikáció:
-A legnagyobb kihívást az ismétlődő hírek kezelése jelentette. Megoldásként a Pandas ```drop_duplicates``` funkcióját alkalmaztam a hírek címei alapján, így az archívum csak egyedi bejegyzéseket tartalmaz, függetlenül attól, hogy egy hír hány napig szerepel a címlapon.
+Bypassing bot protection: Many websites block the script-based requests. I implemented a dedicated User-Agent header that simulates a modern web browser guarenteeing undisturbed datascraping.
 
-2. Bot-védelem megkerülése:
-Sok weboldal blokkolja a script-alapú kéréseket. A szoftverbe beépítettem egy egyedi User-Agent fejlécet, amely szimulálja a modern böngészőket, biztosítva a zavartalan adatgyűjtést.
+Docker timezone handling: The container environment uses the default timezone which could cause timing shifts. Therefore, I implemented the ```TZ=Europe/Budapest``` environment variable in the Dockerfile so the scheduling occurs exactly at 09:00 AM local time.
 
-3. Docker időzóna kezelés:
-Konténeres környezetben az alapértelmezett UTC időzóna miatt az időzítés eltolódhatott volna. Ezért a Dockerfile-ban implementáltam a ```TZ=Europe/Budapest``` beállítást, hogy az időzítés pontosan a helyi időszerint 09:00-kor történjen.
-
-
-Struktúra:
+Structure:
 .
-├── main.py                     # A fő alkalmazáslogika
-├── tech_hirek_archivum.xlsx    # Az automatikusan generált adatbázis
-├── Dockerfile                  # Konténer definíció (Timezone configgal)
+├── main.py                     # Main logic
+├── tech_hirek_archivum.xlsx    # Automatically generated database
+├── Dockerfile                  # Container definition (with timezone config)
 ├── docker-compose.yml          # Orchestration (Volumes & Restart policy)
-└── requirements.txt            # Szükséges Python könyvtárak
+└── requirements.txt            # Project Dependencies
 
-Készítette: Molnár Gergő - https://www.linkedin.com/in/gerg%C5%91-moln%C3%A1r-3920b53a7/
+Created by: Molnár Gergő - https://www.linkedin.com/in/gerg%C5%91-moln%C3%A1r-3920b53a7/
